@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src ws: wss: http: https: stun: turn: turns:; img-src 'self' data: blob: http: https:; style-src 'self' 'unsafe-inline'; script-src 'self'" />
+    <title>Wyre</title>
+    <link rel="stylesheet" href="themes.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="login-screen" class="screen">
+      <div class="login-box">
+        <svg class="brand-logo" viewBox="0 0 210 60" xmlns="http://www.w3.org/2000/svg" aria-label="Wyre">
+          <defs>
+            <linearGradient id="brand-gradient" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" style="stop-color: var(--accent)" />
+              <stop offset="100%" style="stop-color: var(--accent-2)" />
+            </linearGradient>
+          </defs>
+          <svg x="2" y="2" width="56" height="56" viewBox="0 0 12540 12540">
+            <g transform="translate(0.000000,12540.000000) scale(0.100000,-0.100000)" fill="url(#brand-gradient)" stroke="none">
+              <path d="M0 6270 l0 -6270 6270 0 6270 0 0 6270 0 6270 -6270 0 -6270 0 0 -6270z m5250 1455 c520 -60 943 -315 1305 -784 112 -145 317 -450 341 -506 25 -60 15 -144 -22 -197 -76 -108 -236 -119 -325 -21 -14 15 -76 102 -137 193 -364 541 -650 764 -1098 855 -346 71 -673 7 -912 -179 -167 -129 -270 -284 -348 -523 -25 -76 -60 -167 -77 -203 -40 -81 -140 -183 -223 -227 -118 -63 -116 -63 -903 -63 -536 0 -724 3 -755 12 -79 24 -146 118 -146 204 0 93 74 190 163 212 33 9 245 12 736 12 l690 0 36 31 c30 26 41 49 71 148 126 404 378 714 724 890 273 139 549 185 880 146z m4934 -1015 c76 -29 167 -100 209 -163 122 -184 103 -408 -49 -568 -171 -178 -439 -181 -618 -7 l-61 58 -603 -2 -604 -3 -28 -31 c-16 -19 -41 -71 -60 -130 -121 -365 -330 -618 -653 -789 -315 -168 -741 -190 -1097 -58 -359 133 -654 405 -1059 977 -70 100 -92 140 -101 181 -27 129 59 244 188 253 47 3 66 -1 112 -25 46 -23 65 -43 117 -117 406 -580 644 -793 991 -888 112 -31 362 -31 477 0 176 48 358 163 457 289 67 86 111 170 167 326 28 76 62 160 77 185 42 71 150 175 222 211 119 60 129 61 774 61 l586 0 30 53 c53 94 160 173 277 204 66 17 178 9 249 -17z" />
+            </g>
+          </svg>
+          <text x="70" y="42" font-size="32" font-weight="700" fill="var(--text-bright)" letter-spacing="1">wyre</text>
+        </svg>
+        <p class="subtitle">Conexao direta, do seu jeito</p>
+        <div class="input-icon-wrap">
+          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="6" rx="1.5" /><rect x="3" y="14" width="18" height="6" rx="1.5" />
+            <circle cx="7" cy="7" r="0.6" fill="currentColor" stroke="none" /><circle cx="7" cy="17" r="0.6" fill="currentColor" stroke="none" />
+          </svg>
+          <input id="server-input" type="text" placeholder="http://localhost:8080" value="http://localhost:8080" />
+        </div>
+        <div class="input-icon-wrap">
+          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
+          </svg>
+          <input id="username-input" type="text" placeholder="Usuario" maxlength="32" autocomplete="username" />
+        </div>
+        <div class="input-icon-wrap">
+          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" />
+          </svg>
+          <input id="password-input" type="password" placeholder="Senha" autocomplete="current-password" />
+        </div>
+        <div class="login-actions">
+          <button id="login-btn">Entrar</button>
+        </div>
+        <p id="login-error" class="error"></p>
+        <p class="auth-switch">Novo por aqui? <a id="register-btn" href="#">Criar conta</a></p>
+      </div>
+    </div>
+
+    <div id="register-screen" class="screen hidden">
+      <div class="auth-card">
+        <div class="auth-brand-panel">
+          <svg class="brand-logo" viewBox="0 0 210 60" xmlns="http://www.w3.org/2000/svg" aria-label="Wyre">
+            <svg x="2" y="2" width="56" height="56" viewBox="0 0 12540 12540">
+              <g transform="translate(0.000000,12540.000000) scale(0.100000,-0.100000)" fill="url(#brand-gradient)" stroke="none">
+                <path d="M0 6270 l0 -6270 6270 0 6270 0 0 6270 0 6270 -6270 0 -6270 0 0 -6270z m5250 1455 c520 -60 943 -315 1305 -784 112 -145 317 -450 341 -506 25 -60 15 -144 -22 -197 -76 -108 -236 -119 -325 -21 -14 15 -76 102 -137 193 -364 541 -650 764 -1098 855 -346 71 -673 7 -912 -179 -167 -129 -270 -284 -348 -523 -25 -76 -60 -167 -77 -203 -40 -81 -140 -183 -223 -227 -118 -63 -116 -63 -903 -63 -536 0 -724 3 -755 12 -79 24 -146 118 -146 204 0 93 74 190 163 212 33 9 245 12 736 12 l690 0 36 31 c30 26 41 49 71 148 126 404 378 714 724 890 273 139 549 185 880 146z m4934 -1015 c76 -29 167 -100 209 -163 122 -184 103 -408 -49 -568 -171 -178 -439 -181 -618 -7 l-61 58 -603 -2 -604 -3 -28 -31 c-16 -19 -41 -71 -60 -130 -121 -365 -330 -618 -653 -789 -315 -168 -741 -190 -1097 -58 -359 133 -654 405 -1059 977 -70 100 -92 140 -101 181 -27 129 59 244 188 253 47 3 66 -1 112 -25 46 -23 65 -43 117 -117 406 -580 644 -793 991 -888 112 -31 362 -31 477 0 176 48 358 163 457 289 67 86 111 170 167 326 28 76 62 160 77 185 42 71 150 175 222 211 119 60 129 61 774 61 l586 0 30 53 c53 94 160 173 277 204 66 17 178 9 249 -17z" />
+              </g>
+            </svg>
+            <text x="70" y="42" font-size="32" font-weight="700" fill="var(--text-bright)" letter-spacing="1">wyre</text>
+          </svg>
+          <h2>Crie sua identidade no Wyre</h2>
+          <p class="auth-brand-text">Conexao direta, sem intermediarios. Configure sua conta pra comecar a conversar, criar servidores e se conectar com quem importa.</p>
+          <ul class="auth-feature-list">
+            <li>
+              <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" /></svg>
+              <span>Conversas em tempo real</span>
+            </li>
+            <li>
+              <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" /></svg>
+              <span>Seus proprios servidores</span>
+            </li>
+            <li>
+              <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
+              <span>Controle total dos seus dados</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="auth-form-panel">
+          <h3>Criar conta</h3>
+          <p class="subtitle">Preencha os dados abaixo pra comecar</p>
+
+          <div class="input-icon-wrap">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
+            </svg>
+            <input id="register-username-input" type="text" placeholder="Usuario" maxlength="32" autocomplete="username" />
+          </div>
+          <div class="input-icon-wrap">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" />
+            </svg>
+            <input id="register-password-input" type="password" placeholder="Senha" autocomplete="new-password" />
+          </div>
+          <div class="input-icon-wrap">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" />
+            </svg>
+            <input id="register-confirm-input" type="password" placeholder="Confirmar senha" autocomplete="new-password" />
+          </div>
+
+          <button id="register-submit-btn" type="button">Criar conta</button>
+          <p id="register-error" class="error"></p>
+
+          <p class="auth-switch">Ja tem conta? <a id="back-to-login-link" href="#">Entrar</a></p>
+        </div>
+      </div>
+    </div>
+
+    <div id="app-screen" class="screen hidden">
+      <nav id="guild-rail">
+        <button id="dm-home-btn" class="icon-btn rail-icon-btn rail-home-btn active" type="button" title="Mensagens diretas">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" /></svg>
+        </button>
+
+        <div class="rail-divider"></div>
+
+        <ul id="guild-list"></ul>
+
+        <div class="rail-divider"></div>
+
+        <button id="add-guild-btn" class="icon-btn rail-icon-btn" type="button" title="Adicionar servidor">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+        </button>
+      </nav>
+
+      <aside id="channel-sidebar">
+        <div id="dm-panel">
+          <div class="channel-list-header">
+            <span>Mensagens diretas</span>
+          </div>
+          <ul id="dm-list"></ul>
+        </div>
+
+        <div id="guild-channel-panel" class="hidden">
+          <div id="guild-header">
+            <span id="guild-header-name">Selecione um servidor</span>
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
+          </div>
+
+          <div class="channel-list-header">
+            <span>Canais</span>
+            <button id="add-channel-btn" class="icon-btn hidden" type="button" title="Criar canal">
+              <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+            </button>
+          </div>
+
+          <ul id="channel-list"></ul>
+
+          <form id="create-channel-form" class="inline-form hidden">
+            <input id="channel-name-input" type="text" placeholder="nome-do-canal" maxlength="64" />
+            <select id="channel-type-input">
+              <option value="text">texto</option>
+              <option value="voice">voz</option>
+            </select>
+            <button type="submit">Criar</button>
+          </form>
+          <p id="channel-form-status" class="error"></p>
+
+          <div id="voice-status-bar" class="voice-status-bar hidden">
+            <div class="voice-status-text">
+              <span class="voice-status-label">Voz conectada</span>
+              <span id="voice-status-channel"></span>
+            </div>
+            <div class="voice-status-actions">
+              <button id="camera-toggle-btn" class="icon-btn footer-icon-btn" type="button" title="Ativar camera">
+                <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="6" width="14" height="12" rx="2" /><path d="M16 10l6-3v10l-6-3" />
+                </svg>
+              </button>
+              <button id="screen-share-btn" class="icon-btn footer-icon-btn" type="button" title="Compartilhar tela">
+                <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="14" rx="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="18" x2="12" y2="21" />
+                </svg>
+              </button>
+              <button id="voice-disconnect-btn" class="icon-btn footer-icon-btn" type="button" title="Desconectar da voz">
+                <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12" /></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div id="user-footer" class="user-footer">
+          <div class="avatar-wrap">
+            <div id="user-footer-avatar" class="avatar"></div>
+            <span class="status-dot"></span>
+          </div>
+          <div class="user-footer-text">
+            <span id="user-footer-name" class="user-footer-name"></span>
+            <span id="user-footer-status" class="user-footer-status"></span>
+          </div>
+          <div class="footer-icons">
+            <button id="mic-btn" class="icon-btn footer-icon-btn" type="button" title="Mutar microfone">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="2" width="6" height="11" rx="3" />
+                <path d="M5 10a7 7 0 0 0 14 0" />
+                <line x1="12" y1="19" x2="12" y2="22" />
+                <line x1="8" y1="22" x2="16" y2="22" />
+                <line class="mute-slash hidden" x1="3" y1="3" x2="21" y2="21" />
+              </svg>
+            </button>
+            <button id="deafen-btn" class="icon-btn footer-icon-btn" type="button" title="Ensurdecer">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 14v-2a8 8 0 0 1 16 0v2" />
+                <rect x="2" y="14" width="5" height="7" rx="2" />
+                <rect x="17" y="14" width="5" height="7" rx="2" />
+                <line class="mute-slash hidden" x1="3" y1="3" x2="21" y2="21" />
+              </svg>
+            </button>
+            <button id="settings-btn" class="icon-btn footer-icon-btn" type="button" title="Configuracoes">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <line x1="4" y1="6" x2="20" y2="6" /><circle cx="14" cy="6" r="2" fill="currentColor" stroke="none" />
+                <line x1="4" y1="12" x2="20" y2="12" /><circle cx="8" cy="12" r="2" fill="currentColor" stroke="none" />
+                <line x1="4" y1="18" x2="20" y2="18" /><circle cx="16" cy="18" r="2" fill="currentColor" stroke="none" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <main class="chat-main">
+        <div id="channel-title">Nenhum canal selecionado</div>
+        <div id="video-stage" class="video-stage hidden">
+          <div id="video-tiles" class="video-tiles"></div>
+        </div>
+        <div class="messages-wrap">
+          <div id="messages" class="messages"></div>
+          <div id="messages-empty" class="messages-empty">
+            <p>Selecione um canal pra come&ccedil;ar a conversa.</p>
+          </div>
+        </div>
+        <form id="message-form" class="message-form">
+          <input id="message-input" type="text" placeholder="Mensagem" autocomplete="off" disabled />
+          <button type="submit" disabled>
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>
+            <span>Enviar</span>
+          </button>
+        </form>
+      </main>
+
+      <aside class="member-sidebar">
+        <h2>Online no canal</h2>
+        <ul id="user-list"></ul>
+      </aside>
+    </div>
+
+    <div id="settings-modal" class="modal-overlay hidden">
+      <div class="modal modal-with-sidebar">
+        <nav class="modal-sidebar">
+          <div class="modal-sidebar-header">
+            <h2>Configuracoes</h2>
+            <p class="modal-sidebar-subtitle">Wyre</p>
+          </div>
+
+          <div class="modal-nav">
+            <button class="modal-tab active" data-tab="profile" data-tab-label="Perfil" type="button">
+              <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
+              <span>Perfil</span>
+            </button>
+            <button class="modal-tab" data-tab="appearance" data-tab-label="Aparencia" type="button">
+              <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" /><line x1="12" y1="2" x2="12" y2="4" /><line x1="12" y1="20" x2="12" y2="22" /><line x1="4" y1="12" x2="2" y2="12" /><line x1="22" y1="12" x2="20" y2="12" /><line x1="5.6" y1="5.6" x2="4.2" y2="4.2" /><line x1="19.8" y1="19.8" x2="18.4" y2="18.4" /><line x1="5.6" y1="18.4" x2="4.2" y2="19.8" /><line x1="19.8" y1="4.2" x2="18.4" y2="5.6" /></svg>
+              <span>Aparencia</span>
+            </button>
+            <button class="modal-tab" data-tab="bots" data-tab-label="Bots" type="button">
+              <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="14" height="10" rx="2" /><line x1="12" y1="8" x2="12" y2="4" /><circle cx="12" cy="3" r="1" fill="currentColor" stroke="none" /><circle cx="9" cy="13" r="1" fill="currentColor" stroke="none" /><circle cx="15" cy="13" r="1" fill="currentColor" stroke="none" /></svg>
+              <span>Bots</span>
+            </button>
+          </div>
+
+          <div class="modal-sidebar-footer">
+            <div class="modal-divider"></div>
+            <button id="logout-btn" class="modal-nav-danger" type="button">
+              <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>
+              <span>Sair da conta</span>
+            </button>
+          </div>
+        </nav>
+
+        <div class="modal-content">
+          <div class="modal-content-header">
+            <h3 id="settings-panel-title">Perfil</h3>
+            <button id="settings-close-btn" class="modal-close" type="button">&times;</button>
+          </div>
+
+          <div class="modal-panels">
+            <div id="tab-profile" class="modal-panel">
+              <div id="avatar-preview" class="avatar-preview"></div>
+              <label for="avatar-input">Avatar (PNG/JPEG/WEBP/GIF, ate 2MB)</label>
+              <input id="avatar-input" type="file" accept="image/png,image/jpeg,image/webp,image/gif" />
+
+              <label for="display-name-input">Nome de exibicao</label>
+              <input id="display-name-input" type="text" maxlength="32" placeholder="Como quer aparecer pros outros" />
+
+              <label for="status-text-input">Status</label>
+              <input id="status-text-input" type="text" maxlength="128" placeholder="Ex: jogando, ocupado..." />
+
+              <label for="bio-input">Bio</label>
+              <textarea id="bio-input" maxlength="190" placeholder="Fale um pouco sobre voce"></textarea>
+
+              <button id="save-profile-btn" class="save-btn" type="button">Salvar perfil</button>
+              <p id="profile-status" class="error"></p>
+            </div>
+
+            <div id="tab-appearance" class="modal-panel hidden">
+              <label for="theme-select">Tema</label>
+              <select id="theme-select">
+                <option value="dark">Escuro (padrao)</option>
+                <option value="light">Claro</option>
+                <option value="midnight">Midnight (OLED)</option>
+              </select>
+
+              <label for="custom-css-input">CSS customizado</label>
+              <textarea id="custom-css-input" placeholder="/* seu CSS aqui, ex: .msg { font-size: 16px; } */"></textarea>
+              <button id="apply-custom-css-btn" class="save-btn" type="button">Aplicar CSS</button>
+            </div>
+
+            <div id="tab-bots" class="modal-panel hidden">
+              <label>Meus bots</label>
+              <ul id="bots-list"></ul>
+              <form id="create-bot-form" class="inline-form">
+                <input id="bot-username-input" type="text" placeholder="nome_do_bot" maxlength="32" />
+                <button type="submit">Criar bot</button>
+              </form>
+              <p id="bot-token-reveal" class="token-reveal hidden"></p>
+              <p id="bots-status" class="error"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="add-guild-modal" class="modal-overlay hidden">
+      <div class="modal modal-single">
+        <div class="modal-content-header">
+          <h3>Adicionar servidor</h3>
+          <button id="add-guild-close-btn" class="modal-close" type="button">&times;</button>
+        </div>
+
+        <div class="modal-panels">
+          <div class="modal-panel">
+            <button id="choose-create-guild-btn" class="option-card" type="button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+              <div>
+                <strong>Criar um servidor</strong>
+                <span>Comece do zero e convide seus amigos</span>
+              </div>
+            </button>
+            <button id="choose-join-guild-btn" class="option-card" type="button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>
+              <div>
+                <strong>Ja tenho um convite</strong>
+                <span>Entre com o ID de um servidor existente</span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="create-guild-modal" class="modal-overlay hidden">
+      <div class="modal modal-single">
+        <div class="modal-content-header">
+          <div class="modal-header-left">
+            <button id="create-guild-back-btn" class="modal-back" type="button">&larr;</button>
+            <h3>Criar servidor</h3>
+          </div>
+          <button id="create-guild-close-btn" class="modal-close" type="button">&times;</button>
+        </div>
+
+        <div class="modal-panels">
+          <form id="create-guild-form" class="modal-panel">
+            <p class="subtitle">De uma personalidade ao seu servidor com um nome e um icone. Voce pode mudar isso depois.</p>
+
+            <div class="icon-upload-wrap" id="create-guild-icon-trigger">
+              <div id="create-guild-icon-preview" class="icon-upload-preview">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" /><circle cx="12" cy="13" r="4" /></svg>
+              </div>
+              <span class="icon-upload-label">Icone</span>
+            </div>
+            <input id="create-guild-icon-input" type="file" accept="image/png,image/jpeg,image/webp,image/gif" class="hidden" />
+
+            <label for="create-guild-input">Nome do servidor</label>
+            <input id="create-guild-input" type="text" placeholder="Nome do servidor" maxlength="64" />
+
+            <p id="create-guild-status" class="error"></p>
+
+            <button type="submit" class="save-btn save-btn-wide">Criar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="join-guild-modal" class="modal-overlay hidden">
+      <div class="modal modal-single">
+        <div class="modal-content-header">
+          <div class="modal-header-left">
+            <button id="join-guild-back-btn" class="modal-back" type="button">&larr;</button>
+            <h3>Entrar com convite</h3>
+          </div>
+          <button id="join-guild-close-btn" class="modal-close" type="button">&times;</button>
+        </div>
+
+        <div class="modal-panels">
+          <div class="modal-panel">
+            <label for="join-guild-input">ID do servidor</label>
+            <form id="join-guild-form" class="inline-form">
+              <input id="join-guild-input" type="text" placeholder="ID do servidor" />
+              <button type="submit">Entrar</button>
+            </form>
+            <p id="join-guild-status" class="error"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="guild-settings-modal" class="modal-overlay hidden">
+      <div class="modal modal-with-sidebar">
+        <nav class="modal-sidebar">
+          <div class="modal-sidebar-header">
+            <h2>Configuracoes</h2>
+            <p class="modal-sidebar-subtitle">Servidor</p>
+          </div>
+
+          <div class="modal-nav">
+            <button class="modal-tab active" data-guild-tab="overview" data-guild-tab-label="Visao geral" type="button">
+              <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3" /><circle cx="9" cy="9" r="2" /><path d="M21 15l-5-5L5 21" /></svg>
+              <span>Visao geral</span>
+            </button>
+            <button class="modal-tab" data-guild-tab="emoji" data-guild-tab-label="Emojis" type="button">
+              <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><path d="M8.5 14s1.2 2 3.5 2 3.5-2 3.5-2" /><line x1="8.5" y1="9.5" x2="8.51" y2="9.5" /><line x1="15.5" y1="9.5" x2="15.51" y2="9.5" /></svg>
+              <span>Emojis</span>
+            </button>
+            <button class="modal-tab" data-guild-tab="roles" data-guild-tab-label="Cargos" type="button">
+              <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z" /></svg>
+              <span>Cargos</span>
+            </button>
+            <button class="modal-tab" data-guild-tab="members" data-guild-tab-label="Membros" type="button">
+              <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+              <span>Membros</span>
+            </button>
+          </div>
+        </nav>
+
+        <div class="modal-content">
+          <div class="modal-content-header">
+            <h3 id="guild-settings-title">Configuracoes do servidor</h3>
+            <button id="guild-settings-close-btn" class="modal-close" type="button">&times;</button>
+          </div>
+
+          <div class="modal-panels">
+            <div id="guild-tab-overview" class="modal-panel">
+              <p id="guild-settings-id" class="subtitle"></p>
+              <div id="guild-icon-preview" class="avatar-preview"></div>
+              <label for="guild-icon-input">Icone do servidor</label>
+              <input id="guild-icon-input" type="file" accept="image/png,image/jpeg,image/webp,image/gif" />
+
+              <div id="guild-banner-preview" class="banner-preview"></div>
+              <label for="guild-banner-input">Banner do servidor</label>
+              <input id="guild-banner-input" type="file" accept="image/png,image/jpeg,image/webp,image/gif" />
+            </div>
+
+            <div id="guild-tab-emoji" class="modal-panel hidden">
+              <label>Emojis customizados</label>
+              <ul id="guild-emoji-list"></ul>
+              <form id="add-emoji-form" class="inline-form">
+                <input id="emoji-name-input" type="text" placeholder="nome_do_emoji" maxlength="32" />
+                <input id="emoji-file-input" type="file" accept="image/png,image/jpeg,image/webp,image/gif" />
+                <button type="submit">Adicionar</button>
+              </form>
+            </div>
+
+            <div id="guild-tab-roles" class="modal-panel hidden">
+              <label>Cargos</label>
+              <ul id="guild-roles-list"></ul>
+              <button id="create-role-btn" class="save-btn" type="button">+ Criar cargo</button>
+
+              <div id="role-editor" class="role-editor hidden">
+                <label for="role-name-input">Nome do cargo</label>
+                <input id="role-name-input" type="text" maxlength="32" placeholder="Nome do cargo" />
+
+                <label for="role-color-input">Cor</label>
+                <input id="role-color-input" type="color" value="#99aab5" />
+
+                <label>Permissoes</label>
+                <div id="role-permissions-list" class="role-permissions-list"></div>
+
+                <div class="role-editor-actions">
+                  <button id="role-save-btn" class="save-btn" type="button">Salvar</button>
+                  <button id="role-cancel-btn" type="button">Cancelar</button>
+                </div>
+              </div>
+
+              <p id="guild-roles-status" class="error"></p>
+            </div>
+
+            <div id="guild-tab-members" class="modal-panel hidden">
+              <label>Membros</label>
+              <ul id="guild-members-list"></ul>
+              <p id="guild-members-status" class="error"></p>
+            </div>
+          </div>
+
+          <p id="guild-settings-status" class="error"></p>
+        </div>
+      </div>
+    </div>
+
+    <div id="screen-share-modal" class="modal-overlay hidden">
+      <div class="modal modal-single">
+        <div class="modal-content-header">
+          <h3>Escolher o que compartilhar</h3>
+          <button id="screen-share-close-btn" class="modal-close" type="button">&times;</button>
+        </div>
+        <div id="screen-share-sources" class="screen-share-sources"></div>
+      </div>
+    </div>
+
+    <div id="profile-popover" class="profile-popover hidden">
+      <div id="profile-popover-banner" class="profile-popover-banner"></div>
+      <div class="profile-popover-body">
+        <div id="profile-popover-avatar" class="profile-popover-avatar"></div>
+        <div class="profile-popover-names">
+          <strong id="profile-popover-display-name"></strong>
+          <span id="profile-popover-username"></span>
+        </div>
+        <p id="profile-popover-status" class="profile-popover-status hidden"></p>
+        <div id="profile-popover-divider" class="modal-divider hidden"></div>
+        <p id="profile-popover-bio" class="profile-popover-bio hidden"></p>
+      </div>
+    </div>
+
+    <style id="custom-css-style"></style>
+
+    <script src="webrtc.js"></script>
+    <script src="p2pChat.js"></script>
+    <script src="dmChat.js"></script>
+    <script src="voice.js"></script>
+    <script src="renderer.js"></script>
+  </body>
+</html>

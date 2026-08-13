@@ -1,0 +1,24 @@
+{
+  "name": "wyre",
+  "productName": "Wyre",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Wyre — plataforma de chat/voz estilo Discord, P2P hibrida. Projeto de aprendizado.",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "server": "node server/index.js",
+    "rebuild:electron-native": "electron-rebuild -f -m electron -w better-sqlite3 && npm rebuild better-sqlite3"
+  },
+  "devDependencies": {
+    "@electron/rebuild": "^4.2.0",
+    "electron": "^31.3.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^12.11.1",
+    "express": "^5.2.1",
+    "multer": "^2.2.0",
+    "ws": "^8.18.0"
+  }
+}

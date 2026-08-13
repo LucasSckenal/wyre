@@ -1,0 +1,80 @@
+/* Wyre — tokens de tema. Paleta padrao: monocromatica preto/branco, sem cor de marca. */
+:root {
+  --bg-primary: #16191c;
+  --bg-secondary: #101316;
+  --bg-tertiary: #0a0c0e;
+  --bg-input: #1c2024;
+  --bg-hover: #202428;
+  --bg-active: #262b30;
+  --border: #2a2f36;
+
+  --accent: #e8e8ea;
+  --accent-hover: #ffffff;
+  --accent-2: #e8e8ea;
+  --accent-rgb: 232, 232, 234;
+  --accent-gradient: var(--accent);
+  --danger: #f23f42;
+  --danger-hover: #cc3538;
+  --danger-rgb: 242, 63, 66;
+
+  --btn-secondary: #4e5058;
+  --btn-secondary-hover: #6d6f78;
+
+  --text-normal: #dbdee1;
+  --text-bright: #f2f3f5;
+  --text-muted: #949ba4;
+  --text-on-accent: #16181b;
+  --text-on-secondary: #ffffff;
+
+  --bg-secondary-rgb: 16, 19, 22;
+  --bg-tertiary-rgb: 10, 12, 14;
+
+  --overlay-tint: rgba(255, 255, 255, 0.06);
+  --overlay-tint-strong: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="midnight"] {
+  --bg-primary: #000000;
+  --bg-secondary: #050505;
+  --bg-tertiary: #000000;
+  --bg-input: #0d0d0d;
+  --bg-hover: #121212;
+  --bg-active: #181818;
+  --border: #1c1c1c;
+
+  --bg-secondary-rgb: 5, 5, 5;
+  --bg-tertiary-rgb: 0, 0, 0;
+}
+
+[data-theme="light"] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f2f3f5;
+  --bg-tertiary: #e3e5e8;
+  --bg-input: #ebedef;
+  --bg-hover: #e8e9ec;
+  --bg-active: #dcdee1;
+  --border: #e0e1e4;
+
+  --accent: #1c1f22;
+  --accent-hover: #000000;
+  --accent-2: #1c1f22;
+  --accent-rgb: 28, 31, 34;
+  --danger: #d83c3e;
+  --danger-hover: #b93032;
+  --danger-rgb: 216, 60, 62;
+
+  --bg-secondary-rgb: 242, 243, 245;
+  --bg-tertiary-rgb: 227, 229, 232;
+
+  --btn-secondary: #d4d6da;
+  --btn-secondary-hover: #c3c6cb;
+
+  --text-normal: #2e3338;
+  --text-bright: #060607;
+  --text-muted: #5c6169;
+  --text-on-accent: #ffffff;
+  --text-on-secondary: #1e2124;
+
+  --overlay-tint: rgba(20, 20, 24, 0.05);
+  --overlay-tint-strong: rgba(20, 20, 24, 0.09);
+}
