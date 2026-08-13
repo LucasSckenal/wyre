@@ -73,6 +73,7 @@ const channelTitle = document.getElementById('channel-title');
 const messagesWrapEl = document.querySelector('.messages-wrap');
 const messagesEl = document.getElementById('messages');
 const messagesEmpty = document.getElementById('messages-empty');
+const messagesEmptyLogo = document.getElementById('messages-empty-logo');
 const messageForm = document.getElementById('message-form');
 const messageInput = document.getElementById('message-input');
 const userListEl = document.getElementById('user-list');
@@ -1223,6 +1224,7 @@ function clearDmHome() {
   lastMessageAuthorId = null;
   messagesEmpty.querySelector('p').textContent = 'Selecione uma conversa pra comecar.';
   messagesEmpty.classList.remove('hidden');
+  messagesEmptyLogo.classList.remove('hidden');
   messageInput.disabled = true;
   messageForm.querySelector('button').disabled = true;
 }
@@ -1238,6 +1240,7 @@ function openDm(peerId) {
   lastMessageAuthorId = null;
   messagesEmpty.querySelector('p').textContent = 'Nenhuma mensagem ainda por aqui.';
   messagesEmpty.classList.remove('hidden');
+  messagesEmptyLogo.classList.add('hidden');
   messageInput.disabled = false;
   messageForm.querySelector('button').disabled = false;
 
@@ -1295,6 +1298,7 @@ function clearChannelView() {
   lastMessageAuthorId = null;
   messagesEmpty.querySelector('p').textContent = 'Selecione um canal pra comecar a conversa.';
   messagesEmpty.classList.remove('hidden');
+  messagesEmptyLogo.classList.add('hidden');
   channelPeers = [];
   renderUserList([]);
   messageInput.disabled = true;
@@ -1318,6 +1322,7 @@ function showTextChannelView(channel, channelId) {
   lastMessageAuthorId = null;
   messagesEmpty.querySelector('p').textContent = 'Nenhuma mensagem ainda por aqui.';
   messagesEmpty.classList.remove('hidden');
+  messagesEmptyLogo.classList.add('hidden');
   channelPeers = [];
   renderUserList([]);
 
